@@ -5,7 +5,6 @@ const cors = require("cors");
 const { OpenAI } = require("openai");
 
 const app = express();
-const { OPENAI_API_KEY } = process.env;
 
 // OpenAI API configuration
 const openai = new OpenAI({
@@ -22,12 +21,12 @@ app.listen(8080, () => {
 app.post("/create", async (req, res) => {
     const { prompt } = req.body;
     try {
-        const response = await openai.createImage({
+        const response = await openai.images.generate({
             prompt,
             n: 1,
             size: "512x512",
         });
-        res.send(response.data.data[0].url);
+        res.send(response.data[0].url);
     } catch (err) {
         res.send(err.message);
     }
